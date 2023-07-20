@@ -7,6 +7,8 @@ import requests
 key_number = -1
 
 def main():
+
+
     st.write("# 무구 비카 by 길드-레오니스")
     st.write("")
 
@@ -31,6 +33,14 @@ def main():
     else:
         pass
     selected_job_classes = [j for j in [selected_job_class1, selected_job_class2, selected_job_class3] if j != ""]
+    st.write('''<style>
+
+    [data-testid="column"] {
+        width: calc(25% - 1rem) !important;
+        flex: 1 1 calc(25% - 1rem) !important;
+        min-width: calc(25% - 1rem) !important;
+    }
+    </style>''', unsafe_allow_html=True)
     if selected_job_classes:
         vcs = fetch_vcs_for_job_in_brief(selected_job_classes)
         show_vcs_in_brief(vcs, 4)
