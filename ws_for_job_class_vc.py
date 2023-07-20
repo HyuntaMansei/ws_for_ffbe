@@ -33,7 +33,7 @@ def main():
     selected_job_classes = [j for j in [selected_job_class1, selected_job_class2, selected_job_class3] if j != ""]
     if selected_job_classes:
         vcs = fetch_vcs_for_job_in_brief(selected_job_classes)
-        show_vcs_in_brief(vcs, 2)
+        show_vcs_in_brief(vcs, 4)
     else:
         st.write("### 무구를 선택해 주세요.")
     st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
