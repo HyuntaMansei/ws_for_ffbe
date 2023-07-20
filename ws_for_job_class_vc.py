@@ -47,6 +47,7 @@ def main():
     else:
         st.write("### 무구를 선택해 주세요.")
     st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
+    st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
 
 def fetch_vcs_for_job_in_brief(job_classes:list):
     # 비카이름, 이미지링크, 링크
