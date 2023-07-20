@@ -7,12 +7,6 @@ import requests
 key_number = -1
 
 def main():
-    # You can use HTML inside the Markdown to resize the image.
-    image_url = 'https://img.game8.jp/8029218/4d6fae4744ecaff6f140274a1e448a27.png/show'
-    image_width = 100  # Set your desired width in pixels
-
-    st.markdown(f'<img src="{image_url}" width="{image_width}">', unsafe_allow_html=True)
-
     st.write("# 무구 비카 by 길드-레오니스")
     st.write("")
 
