@@ -93,9 +93,13 @@ def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=Non
             <a href="{hyperlink_url}" target="_blank" rel="noopener noreferrer">
                 <img src="{image_url}" alt="Image" width="{image_width}">
             </a>
-            <p style="text-align: center;">{caption_text}</p>
+            <div style="display: flex; justify-content: center;">
+                <p style="font-size: 0.8em;">{caption_text}</p>
+            </div>
+
         </div>
     '''
+    # <p style="text-align: center;">{caption_text}</p>
     canvas.markdown(centered_image_with_caption, unsafe_allow_html=True)
     # # Display the image with a clickable link
     # canvas.markdown(f'<div style="text-align: center;"><a href="{link_url}" target="_blank"><img src="{image_path} width=50 alt="{caption}" style="max-width:100%;"></a></div>', unsafe_allow_html=True)
