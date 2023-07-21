@@ -17,11 +17,14 @@ def main():
     selected_job_class2 = ""
     selected_job_class3 = ""
 
-    selected_job_class1 = get_job_class_name()
-    if selected_job_class1:
-        selected_job_class2 = get_job_class_name()
-        if selected_job_class2:
-            selected_job_class3 = get_job_class_name()
+    columns = st.columns(2)
+    selected_job_class1 = get_job_class_name_simple(columns[0])
+    selected_job_class2 = get_job_class_name_simple(columns[1])
+    # selected_job_class1 = get_job_class_name()
+    # if selected_job_class1:
+    #     selected_job_class2 = get_job_class_name()
+    #     if selected_job_class2:
+    #         selected_job_class3 = get_job_class_name()
 
     if selected_job_class1:
         columns = st.columns(3)
@@ -46,7 +49,7 @@ def main():
         show_vcs_in_brief(vcs,4)
     else:
         st.write("### 무구를 선택해 주세요.")
-    st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
+    st.write("To add later")
 
 def divide_screen(col_num:float):
     r = (1/col_num)*100
@@ -75,6 +78,13 @@ def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
             cnt+=1
             if not cnt < len(vcs):
                 break
+def get_job_class_name_simple(canvas=None):
+    if not canvas:
+        canvas = st
+    sql = "select class_alias from class_list"
+    class_list = [""] + [d[0] for d in fetch_data_from_db(sql)]
+    selected_job_class = canvas.selectbox("무구직업", class_list, key=get_key())
+    return selected_job_class
 def get_job_class_name():
     upper_columns = st.columns(3)
     input_char = upper_columns[0].text_input("캐릭이름:", key=get_key())
