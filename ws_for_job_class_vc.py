@@ -8,9 +8,9 @@ key_number = -1
 
 def main():
     divide_screen(4)
-
-    st.write("# 무구 비카 by 길드-레오니스")
-    st.write("")
+    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스")
+    Centered_msg = f"""<p style = "font-size: 0.5em; text-align: center;" >{Title_msg}</p>"""
+    st.write(Centered_msg, unsafe_allow_html=True)
 
     sql = "select class_alias from class_list"
     selected_job_class1 = ""
@@ -132,7 +132,12 @@ def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=Non
     canvas.markdown(centered_image_with_caption, unsafe_allow_html=True)
     # if (len(caption_text) - 0.5*caption_text.count(" ")) < 8.5:
     #     canvas.write("")
-
+def convert_to_center_msg(msg:str):
+    return f'''
+        <div style="display: flex; justify-content: center;">
+            <h3>{msg}</h3>
+        </div>
+    '''
 def connect_db():
     # Connect to the MySQL database
     db_connection = mysql.connector.connect(
