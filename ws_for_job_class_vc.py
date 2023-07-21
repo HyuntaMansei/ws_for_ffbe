@@ -33,22 +33,30 @@ def main():
     else:
         pass
     selected_job_classes = [j for j in [selected_job_class1, selected_job_class2, selected_job_class3] if j != ""]
-    st.write('''<style>
-
-    [data-testid="column"] {
-        width: calc(25% - 1rem) !important;
-        flex: 1 1 calc(25% - 1rem) !important;
-        min-width: calc(25% - 1rem) !important;
-    }
-    </style>''', unsafe_allow_html=True)
+    divide_screen(4)
+    # st.write('''<style>
+    # [data-testid="column"] {
+    #     width: calc(25% - 1rem) !important;
+    #     flex: 1 1 calc(25% - 1rem) !important;
+    #     min-width: calc(25% - 1rem) !important;
+    # }
+    # </style>''', unsafe_allow_html=True)
     if selected_job_classes:
         vcs = fetch_vcs_for_job_in_brief(selected_job_classes)
-        show_vcs_in_brief(vcs, 4)
+        show_vcs_in_brief(vcs,4)
     else:
         st.write("### 무구를 선택해 주세요.")
     st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
-    st.write("# 무구 비전카드 목록 - 자세히(언젠가는...)")
 
+def divide_screen(col_num:float):
+    r = (1/col_num)*100
+    st.write(f'''<style>
+    [data-testid="column"] {{
+        width: calc({r}% - 1rem) !important;
+        flex: 1 1 calc({r}% - 1rem) !important;
+        min-width: calc({r}% - 1rem) !important;
+    }}
+    </style>''', unsafe_allow_html=True)
 def fetch_vcs_for_job_in_brief(job_classes:list):
     # 비카이름, 이미지링크, 링크
     # select * from vc_for_job_list where 검1 = 0 and 검2 = 0 and 검3 = 1 and 총 = 1;
@@ -57,11 +65,13 @@ def fetch_vcs_for_job_in_brief(job_classes:list):
     print(fetched_vcs)
     return fetched_vcs
 def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
+    divide_screen(col_num)
     columns = st.columns(col_num)
     cnt = 0
     print(len(vcs))
     while cnt < len(vcs):
         for c in range(col_num):
+            # display_image_with_link(*vcs[cnt],width, st)
             display_image_with_link(*vcs[cnt],width, columns[c])
             cnt+=1
             if not cnt < len(vcs):
@@ -94,28 +104,25 @@ def fetch_class(char_name):
     return "검1"
 def get_index_by_job(job):
     return 1
-def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=None, image_width=100, canvas=None):
+def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=None, image_width=50, canvas=None):
     if canvas == None:
         canvas = st
-        print("Canvas is st")
-
+    # max_char_len = 60
+    # adding_space = '&nbsp;'*(int)((max_char_len-1.5*len(caption_text))/2)
+    # caption_text = caption_text+adding_space
     centered_image_with_caption = f'''
         <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
             <a href="{hyperlink_url}" target="_blank" rel="noopener noreferrer">
                 <img src="{image_url}" alt="Image" width="{image_width}">
             </a>
             <div style="display: flex; justify-content: center;">
-                <p style="font-size: 0.8em;">{caption_text}</p>
+                <p style="font-size: 0.5em;">{caption_text}</p>
             </div>
-
         </div>
     '''
-    # <p style="text-align: center;">{caption_text}</p>
     canvas.markdown(centered_image_with_caption, unsafe_allow_html=True)
-    # # Display the image with a clickable link
-    # canvas.markdown(f'<div style="text-align: center;"><a href="{link_url}" target="_blank"><img src="{image_path} width=50 alt="{caption}" style="max-width:100%;"></a></div>', unsafe_allow_html=True)
-    # # Display the caption
-    # canvas.write(caption)
+    if len(caption_text) < 10:
+        canvas.write("")
 
 def connect_db():
     # Connect to the MySQL database
