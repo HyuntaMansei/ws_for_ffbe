@@ -7,7 +7,7 @@ import requests
 key_number = -1
 def main():
     divide_screen(4)
-    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스")
+    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.1")
     Centered_msg = f"""<p style = "font-size: 2em; text-align: center;" >{Title_msg}</p>"""
     st.write(Centered_msg, unsafe_allow_html=True)
 
