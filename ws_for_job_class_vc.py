@@ -7,7 +7,7 @@ import requests
 key_number = -1
 
 def main():
-
+    divide_screen(4)
 
     st.write("# 무구 비카 by 길드-레오니스")
     st.write("")
@@ -65,7 +65,6 @@ def fetch_vcs_for_job_in_brief(job_classes:list):
     print(fetched_vcs)
     return fetched_vcs
 def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
-    divide_screen(col_num)
     columns = st.columns(col_num)
     cnt = 0
     print(len(vcs))
@@ -121,7 +120,7 @@ def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=Non
         </div>
     '''
     canvas.markdown(centered_image_with_caption, unsafe_allow_html=True)
-    if len(caption_text) < 10:
+    if (len(caption_text) - 0.5*caption_text.count(" ")) < 8.5:
         canvas.write("")
 
 def connect_db():
