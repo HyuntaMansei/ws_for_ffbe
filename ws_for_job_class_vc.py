@@ -120,8 +120,8 @@ def display_image_with_link(caption_text=None, image_url=None, hyperlink_url=Non
         </div>
     '''
     canvas.markdown(centered_image_with_caption, unsafe_allow_html=True)
-    if (len(caption_text) - 0.5*caption_text.count(" ")) < 8.5:
-        canvas.write("")
+    # if (len(caption_text) - 0.5*caption_text.count(" ")) < 8.5:
+    #     canvas.write("")
 
 def connect_db():
     # Connect to the MySQL database
