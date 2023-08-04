@@ -32,7 +32,8 @@ def main():
 
         divide_screen(8)
         st.markdown(f"### 해당 무구 캐릭터:{selected_job_classes}")
-        show_chars_in_brief(chars, selected_job_classes)
+        if len(selected_job_classes) != 2:
+            show_chars_in_brief(chars, selected_job_classes)
         if selected_job_class1:
             st.markdown(f"### 무구1 캐릭터:{selected_job_class1}")
             show_chars_in_brief(chars, selected_job_class1)
