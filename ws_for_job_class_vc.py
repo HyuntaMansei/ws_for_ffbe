@@ -7,7 +7,7 @@ import requests
 key_number = -1
 def main():
     divide_screen(4)
-    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.1")
+    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.2")
     Centered_msg = f"""<p style = "font-size: 2em; text-align: center;" >{Title_msg}</p>"""
     st.write(Centered_msg, unsafe_allow_html=True)
 
@@ -24,12 +24,21 @@ def main():
             columns[1].write(f"무구2: {selected_job_class2}")
 
     selected_job_classes = [j for j in [selected_job_class1, selected_job_class2] if j != ""]
+    chars = fetch_chars_in_brief()
     if selected_job_classes:
+        st.markdown(f"### 해당 비전카드")
         vcs = fetch_vcs_for_job_in_brief(selected_job_classes)
         show_vcs_in_brief(vcs,4)
-        st.markdown(f"## 해당 무구 캐릭터:{selected_job_classes} ")
-        chars = fetch_chars_in_brief()
+
+        divide_screen(8)
+        st.markdown(f"### 해당 무구 캐릭터:{selected_job_classes}")
         show_chars_in_brief(chars, selected_job_classes)
+        if selected_job_class1:
+            st.markdown(f"### 무구1 캐릭터:{selected_job_class1}")
+            show_chars_in_brief(chars, selected_job_class1)
+        if selected_job_class2:
+            st.markdown(f"### 무구2 캐릭터:{selected_job_class2}")
+            show_chars_in_brief(chars, selected_job_class2)
     else:
         st.write("### 무구를 선택해 주세요.")
     st.write("To add later")
@@ -75,11 +84,11 @@ def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
             cnt+=1
             if not cnt < len(vcs):
                 break
-def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=100):
+def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=70):
     # chars = Dataframe
     if type(selected_chars) != list:
         selected_chars = [selected_chars,]
-    col_num = 4
+    col_num = 8
     cnt = 0
     element_list = ['화', '빙', '풍', '토', '뇌', '수', '명', '암']
     chars_on_element = {}
@@ -101,9 +110,8 @@ def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=100):
             char_name = get_char_name(character)
             g8_link = character['char_g8_link']
             image_src = character['char_img_src']
-            display_image_with_link(char_name, g8_link, image_src, width, columns[(i%col_num)])
-        if i == 3:
-            columns = st.columns(col_num)
+            display_image_with_link(char_name, g8_link, image_src, width, columns[i])
+            # display_image_with_link(char_name, g8_link, image_src, width, columns[(i%col_num)])
 def get_char_name(character):
     print(type(character))
     if character['char_name']:
