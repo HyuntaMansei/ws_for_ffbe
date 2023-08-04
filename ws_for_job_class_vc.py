@@ -27,6 +27,9 @@ def main():
     if selected_job_classes:
         vcs = fetch_vcs_for_job_in_brief(selected_job_classes)
         show_vcs_in_brief(vcs,4)
+        st.markdown(f"## 해당 무구 캐릭터:{selected_job_classes} ")
+        chars = fetch_chars_in_brief()
+        show_chars_in_brief(chars, selected_job_classes)
     else:
         st.write("### 무구를 선택해 주세요.")
     st.write("To add later")
@@ -46,6 +49,12 @@ def fetch_vcs_for_job_in_brief(job_classes:list):
     fetched_vcs = fetch_data_from_db(sql)
     # print(fetched_vcs)
     return fetched_vcs
+def fetch_chars_in_brief():
+    #캐릭터이름, 이미지링크, 겜8링크
+    sql_query = """SELECT * from char_list"""
+    fetched_chars, col_names = fetch_data_from_db_with_col_names(sql_query)
+    df = pd.DataFrame(fetched_chars, columns=col_names)
+    return df
 def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
     cnt = 0
     while cnt < len(vcs):
@@ -66,6 +75,45 @@ def show_vcs_in_brief(vcs:list, col_num:int=4, width=100):
             cnt+=1
             if not cnt < len(vcs):
                 break
+def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=100):
+    # chars = Dataframe
+    if type(selected_chars) != list:
+        selected_chars = [selected_chars,]
+    col_num = 4
+    cnt = 0
+    element_list = ['화', '빙', '풍', '토', '뇌', '수', '명', '암']
+    chars_on_element = {}
+    # 속성별로 해당하는 클라스 캐릭터를 나누어 담는다.
+    for e in element_list:
+        chars_on_element[e] = chars[(chars['char_element']==e)
+                                    & (chars['char_main_job_class_alias'].isin(selected_chars))]
+    for e in element_list:
+        if len(chars_on_element[e]):
+            print(f"for {e}", "-"*50)
+            print(chars_on_element[e]['char_trsl_name'])
+
+    #캐릭터를 속성별로 출력
+    columns = st.columns(col_num)
+    for i, e in enumerate(element_list):
+        print(chars_on_element[e])
+        write_in_center(e, columns[(i % col_num)])
+        for _, character in chars_on_element[e].iterrows():
+            char_name = get_char_name(character)
+            g8_link = character['char_g8_link']
+            image_src = character['char_img_src']
+            display_image_with_link(char_name, g8_link, image_src, width, columns[(i%col_num)])
+        if i == 3:
+            columns = st.columns(col_num)
+def get_char_name(character):
+    print(type(character))
+    if character['char_name']:
+        return character['char_name']
+    if character['char_trsl_name']:
+        return character['char_trsl_name']
+    if character['char_jp_name']:
+        return character['char_jp_name']
+    else:
+        return "NoName"
 def get_job_class_name_simple(canvas=None):
     if not canvas:
         canvas = st
@@ -101,6 +149,10 @@ def fetch_class(char_name):
     return "검1"
 def get_index_by_job(job):
     return 1
+def write_in_center(msg, canvas=None):
+    if not canvas:
+        canvas:st
+    canvas.write(f"<div style='text-align: center'>{msg}</div>", unsafe_allow_html=True)
 def display_image_with_link(caption_text=None, hyperlink_url=None, image_url=None, image_width=50, canvas=None):
     if canvas == None:
         canvas = st
@@ -136,6 +188,15 @@ def fetch_data_from_db(sql):
     cursor.close()
     conn.close()
     return res
+def fetch_data_from_db_with_col_names(sql):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    res = [list(d) for d in cursor.fetchall()]
+    col_names = cursor.column_names
+    cursor.close()
+    conn.close()
+    return res, col_names
 # Run the Streamlit app
 if __name__ == "__main__":
     main()
