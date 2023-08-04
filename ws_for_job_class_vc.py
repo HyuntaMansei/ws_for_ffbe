@@ -7,7 +7,7 @@ import requests
 key_number = -1
 def main():
     divide_screen(4)
-    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.2")
+    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.21")
     Centered_msg = f"""<p style = "font-size: 2em; text-align: center;" >{Title_msg}</p>"""
     st.write(Centered_msg, unsafe_allow_html=True)
 
@@ -32,7 +32,7 @@ def main():
 
         divide_screen(8)
         st.markdown(f"### 해당 무구 캐릭터:{selected_job_classes}")
-        if len(selected_job_classes) != 2:
+        if len(selected_job_classes) >= 2:
             show_chars_in_brief(chars, selected_job_classes)
         if selected_job_class1:
             st.markdown(f"### 무구1 캐릭터:{selected_job_class1}")
