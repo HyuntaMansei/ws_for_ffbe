@@ -206,7 +206,7 @@ def display_image_with_link(caption_text=None, hyperlink_url=None, image_url=Non
     centered_image_with_caption = f'''
         <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
             <a href="{hyperlink_url}" target="_blank" rel="noopener noreferrer">
-                <img src="{image_url}" alt="Image" style="max-width: 100%; height: auto;">
+                <img src="{image_url}" alt="Image" style="max-width: 120px; height: auto;">
             </a>
             <div style="display: flex; justify-content: center;">
                 <p style="font-size: 0.5em;">{caption_text}</p>
