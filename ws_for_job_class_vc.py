@@ -137,8 +137,9 @@ def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=70):
                                     & (chars['char_main_job_class_alias'].isin(selected_chars))]
     for e in element_list:
         if len(chars_on_element[e]):
-            print(f"for {e}", "-"*50)
-            print(chars_on_element[e]['char_trsl_name'])
+            pass
+            # print(f"for {e}", "-"*50)
+            # print(chars_on_element[e]['g8_trsl_name'])
 
     #캐릭터를 속성별로 출력
     columns = st.columns(col_num)
@@ -147,20 +148,30 @@ def show_chars_in_brief(chars:pd.DataFrame, selected_chars, width=70):
         write_in_center(e, columns[(i % col_num)])
         for _, character in chars_on_element[e].iterrows():
             char_name = get_char_name(character)
-            g8_link = character['char_g8_link']
-            image_src = character['char_img_src']
-            # display_image_with_link(char_name, g8_link, image_src, width, columns[i])
-            display_image_with_link_no_caption(hyperlink_url=g8_link, image_url=image_src, image_width=width, canvas=columns[i])
+            char_link = get_char_link(character)
+            image_src = get_char_img_src(character)
+            display_image_with_link_no_caption(hyperlink_url=char_link, image_url=image_src, image_width=width, canvas=columns[i])
 def get_char_name(character):
-    print(type(character))
-    if character['char_name']:
-        return character['char_name']
-    if character['char_trsl_name']:
-        return character['char_trsl_name']
-    if character['char_jp_name']:
-        return character['char_jp_name']
-    else:
-        return "NoName"
+    pick_up_orders = ["calc_kor_name", "g8_trsl_name", "g8_jpn_name", "calc_jpn_name"]
+    false_return = "NoName"
+    for p in pick_up_orders:
+        if character[p]:
+            return character[p]
+    return false_return
+def get_char_link(character):
+    pick_up_orders = ["g8_link", "calc_global_link", "calc_jpn_link"]
+    false_return = "NoLink"
+    for p in pick_up_orders:
+        if character[p]:
+            return character[p]
+    return false_return
+def get_char_img_src(character):
+    pick_up_orders = ["g8_img_src", "calc_img_source"]
+    false_return = "NoImg"
+    for p in pick_up_orders:
+        if character[p]:
+            return character[p]
+    return false_return
 def get_job_class_name_simple(canvas=None):
     if not canvas:
         canvas = st
