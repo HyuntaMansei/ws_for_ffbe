@@ -9,12 +9,19 @@ key_number = -1
 def main():
     vc_image_size, char_image_size = get_image_size()
     divide_screen(4)
-    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.26")
+    Title_msg = convert_to_center_msg("무구 비카 by 길드-레오니스 v0.27")
     Centered_msg = f"""<p style = "font-size: 2em; text-align: center;" >{Title_msg}</p>"""
     st.write(Centered_msg, unsafe_allow_html=True)
 
-    sql = "select class_alias from class_list"
+    # Download char and vc data from server
+    chars = fetch_chars_in_brief()
+    vcs = fetch_vcs_from_server()
+    chars = chars.sort_values(by='sort_order', ascending=True)
+    vcs = vcs.sort_values(by='sort_order', ascending=True)
+    update_msg = f"last updated: {get_vc_name(vcs[vcs['sort_order']==1].iloc[0])}"
+    st.write(update_msg)
 
+    sql = "select class_alias from class_list"
     columns = st.columns(2)
     selected_job_class1 = get_job_class_name_simple(columns[0])
     selected_job_class2 = get_job_class_name_simple(columns[1])
@@ -26,9 +33,6 @@ def main():
             columns[1].write(f"무구2: {selected_job_class2}")
 
     selected_job_classes = [j for j in [selected_job_class1, selected_job_class2] if j != ""]
-    chars = fetch_chars_in_brief()
-    vcs = fetch_vcs_from_server()
-
     if selected_job_classes:
         st.markdown(f"### 해당 비전카드")
         # vcs = fetch_vcs_from_server(selected_job_classes)
